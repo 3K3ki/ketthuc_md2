@@ -1,14 +1,20 @@
 import React from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useState, useEffect } from "react";
 import { act_get_manga, act_search_manga } from '../../redux/actions';
 
 
 
-export default function Header() {
-  const dispatch = useDispatch()
+export default function Header(props) {
+  console.log(props);
+  let { userLogin } = props
+  console.log(userLogin);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [search, setSearch] = useState("")
+  const [name, setName] = useState("")
+  const [isLogin, setIsLogin] = useState(false);
 
   const handleLoginForm = () => {
     document.getElementById('id01').style.display = 'block'
@@ -30,10 +36,29 @@ export default function Header() {
     });
   }
 
+
+
   useEffect(() => {
-    dispatch(act_get_manga())
-  }, []);
-  //lấy sate hiển thị ra
+    let admin = JSON.parse(localStorage.getItem("admin"))
+    // console.log(admin);
+    if (userLogin !== "") {
+      setIsLogin(true);
+    }
+    if (admin) {
+      setIsLogin(true)
+      setName(admin.email)
+    }
+  }, [userLogin]);
+
+  const handleLogut = () => {
+    localStorage.removeItem("users");
+    localStorage.removeItem("admin");
+    setIsLogin(false);
+    navigate('/');
+
+    dispatch(act_get_manga());
+  }
+
 
   return (
     <div>
@@ -85,7 +110,57 @@ export default function Header() {
                 </button>
               </div>
             </div>
-            <div
+            {isLogin ? (
+
+              <div className="dropdown" id="dropdown">
+
+              {/* Header right */}
+                <button
+                  style={{ width: "350px" }}
+                  className="btn-info dropdown-toggle"
+                  id="dropdownMenuButton1"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <img
+                    src="img/hhinh-anh-luffy-chibi-thu-the-rat-ngau_055520104.jpg"
+                    alt="Avatar"
+                    className="avatar"
+                  />{name !== "" ? name : userLogin}
+                </button>
+
+                {/* Dropdown lựa chọn đăng xuát */}
+                <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1" id='buttonLogin'>
+                  <li>
+                    <a
+                      className="dropdown-item"
+                      href="#"
+                      onClick={handleChangePassForm}
+                    >
+                      Đổi mật khẩu
+                    </a>
+                  </li>
+                  {name === "" ?
+                    "" : <><li>
+                      <Link to="/admin" className="dropdown-item" id='quan-tri'>
+                        Quản lý tài khoản
+                      </Link>
+                    </li>
+                      <li>
+                        <Link to="/add" className="dropdown-item" id='them-manga'>
+                          Thêm Manga
+                        </Link>
+                      </li>
+                    </>
+                  }
+                  <li>
+                    <a className="dropdown-item" onClick={handleLogut}>
+                      Đăng xuất
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            ) : (<div
               className="right-top"
               style={{ textAlign: "center", marginTop: 10 }}
             >
@@ -105,39 +180,8 @@ export default function Header() {
 
                 Đăng ký
               </button>
-              <div className="dropdown" id="dropdown">
-                <button
-                  className="btn btn-secondary dropdown-toggle"
-                  type="button"
-                  id="dropdownMenuButton1"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Dropdown button
-                </button>
-                <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                  <li>
-                    <a
-                      className="dropdown-item"
-                      href="#"
-                      onClick={handleChangePassForm}
-                    >
-                      Đổi mật khẩu
-                    </a>
-                  </li>
-                  <li>
-                    <Link to="/admin" className="dropdown-item">
-                      Quản lý tài khoản
-                    </Link>
-                  </li>
-                  <li>
-                    <a className="dropdown-item" href="#" >
-                      Đăng xuất
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
+
+            </div>)}
           </div>
         </div>
       </div>

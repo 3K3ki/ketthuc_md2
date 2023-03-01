@@ -36,3 +36,16 @@
     transform: rotate(360deg);
   }
 }
+
+.header-right{
+  display: flex;
+  align-items: center;
+  height: 30px;
+  min-width: 250px;
+}
+
+.avatar-header{
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}

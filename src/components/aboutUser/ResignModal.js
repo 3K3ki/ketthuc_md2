@@ -4,7 +4,15 @@ import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { act_create_user } from '../../redux/actions'
 
+const initUser = {
+  fullname: "",
+  email: "",
+  password: "",
+  rePassword: "",
+};
+
 export default function ResignModal() {
+
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -12,14 +20,16 @@ export default function ResignModal() {
     document.getElementById('id02').style.display = 'none'
   }
 
+  const [permission, setPermission] = useState(0)
   const [email, setEmail] = useState("")
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
   const [repassword, setRepassword] = useState("");
   const handleCreate = () => {
-    dispatch(act_create_user({ email, account, password, repassword }))
+    dispatch(act_create_user({ permission ,email, account, password, repassword }))
     navigate("/");
   }
+  
 
   return (
     <div id="id02" className="modal">
@@ -93,8 +103,9 @@ export default function ResignModal() {
           <button
             className="btn btn-outline-success"
             type="button"
-
+            onClick={handleClickClose2}
           >
+            
             Đăng nhập
           </button>
           <label>

@@ -354,13 +354,56 @@ button:hover {
 }
 
 img.avatar {
-    width: 20%;
+    width: 15%;
     border-radius: 50%;
     border: 1px solid black;
+    margin-right: 8px;
+}
+
+#dropdownMenuButton1{
+    margin-left: 8px;
+}
+
+.btn-info{
+    background-color: #fff;
+    border: none;
+    cursor: default !important;
+    box-shadow: none !important;
+    margin-right: -80px;
+}
+
+.btn-info:hover{
+    background-color: #fff;
+}
+
+.btn-info:focus{
+    background-color: #fff;
+    border-color: #fff !important;
+    outline: none;
+}
+
+
+.btn-info:active{
+    background-color: #fff;
+    border-color: #fff !important;
+    outline: none;
 }
 
 .container {
     padding: 16px;
+}
+
+.dropdown-menu{
+    transform: none !important;
+    left: 170px !important;
+    top: 53px !important;
+    inset: 1 !important;
+}
+
+.dropdown-toggle::after{
+    margin-left: 8px !important;
+    cursor: pointer;
+    opacity: 0.8;
 }
 
 span.psw {

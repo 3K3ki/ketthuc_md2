@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { act_delete_user, act_get_user } from '../../redux/actions'
@@ -9,6 +9,7 @@ import ResignModal from './ResignModal'
 
 
 export default function Admin() {
+ 
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -40,7 +41,7 @@ export default function Admin() {
   })
   return (
     <>
-      <Header />
+      <Header/>
       <div className="container">
         <div className="row">
           <div

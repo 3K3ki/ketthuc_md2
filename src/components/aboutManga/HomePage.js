@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from "react";
 import { act_get_manga, } from '../../redux/actions';
@@ -7,9 +7,10 @@ import ResignModal from '../aboutUser/ResignModal';
 import ChangePass from '../aboutUser/ChangePass';
 import Header from './Header';
 import Footer from './Footer';
+import { Link } from 'react-router-dom';
 
 export default function Home() {
-
+const [userLogin,setUserLogin] =useState("")
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -17,13 +18,13 @@ export default function Home() {
   }, []);
   //lấy sate hiển thị raF
   const listManga = useSelector(state => state.mangas)
-  let elementListManga = listManga.map((manga) =>
+  let elementListManga = listManga.map((manga, index) =>
     <>
-      <div className="grid" id="listComic">
+      <div className="grid" id="listComic" key={index}>
         <div className="book-avarta">
-          <a>
+          <Link to="/mangainfo">
             <img src={manga.imageUrls} className="image" />
-          </a>
+          </Link >
           <div className="book-details">
             <i className="bi bi-eye-fill"></i>
             428,1k
@@ -46,7 +47,7 @@ export default function Home() {
   return (
     <>
       {/* <div className="container"> */}
-      <Header />
+      <Header userLogin={userLogin} />
 
       <div className="middle">
         <div className="left-mid">
@@ -437,7 +438,7 @@ export default function Home() {
       {/*//bottom*/}
       <Footer />
       {/*//loginform*/}
-      <LoginModal />
+      <LoginModal setUserLogin={setUserLogin} />
       {/* {closeLoginform} */}
 
       {/*//Singupform*/}

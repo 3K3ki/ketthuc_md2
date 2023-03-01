@@ -2,8 +2,9 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-export default function Login() {
-  const [userLogin, setUserLogin] = useState({ account: "", password: "" });
+export default function Login(props) {
+
+  const [userLogin, setUserLogin] = useState({ email: "", password: "" });
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
   const handleClickClose = () => {
@@ -11,26 +12,33 @@ export default function Login() {
   }
   const handleLogin = (e) => {
     e.preventDefault();
-    if (userLogin.account.trim() === "" || userLogin.password.trim() === "") {
-      setErrorMessage("email và mật khẩu không được để trống");
+    if (userLogin.email.trim() === "" || userLogin.password.trim() === "") {
+      setErrorMessage("Email và mật khẩu không được để trống");
       return;
     }
+
     axios
       .get(
-        `http://localhost:3002/users?account=${userLogin.account}&password=${userLogin.password}`
+        `http://localhost:3002/users?email=${userLogin.email}&password=${userLogin.password}`,
       )
       .then((res) => {
-        console.log(res.data);
+        console.log(res.data[0]);
         //đăng nhập thành công
         if (res.data[0].permission === 1) {
           localStorage.setItem("admin", JSON.stringify(res.data[0]));
-          navigate("/add");
+          document.getElementById('id01').style.display = 'none'  
+         
+          navigate("/admin");
         } else {
           localStorage.setItem("users", JSON.stringify(res.data[0]));
-          navigate("/");
+          document.getElementById('id01').style.display = 'none'
+          // document.getElementById('quan-tri').style.display = 'none'
+          props.setUserLogin(res.data[0].email)
+          
         }
       });
   };
+
 
   return (
     <div id="id01" className="modal">
@@ -40,36 +48,30 @@ export default function Login() {
             onClick={handleClickClose}
             className="close"
             title="Close Modal"
-
           >
             ×
           </span>
           <img
-            src="img/hhinh-anh-luffy-chibi-thu-the-rat-ngau_055520104.jpg"
-            alt="Avatar"
-            className="avatar"
+             src="img/hhinh-anh-luffy-chibi-thu-the-rat-ngau_055520104.jpg"
+             alt="Avatar"
+             className="avatar"
           />
         </div>
         <div className="container">
-          <label
-            className="alert alert-primary"
-            style={{ color: "red" }}
-            id="checklogin"
-          />
           <label>
-            <b id="validate_username1">Tài khoản</b>
+            <b id="validate_username1">Email</b>
           </label>
           <input
-            value={userLogin.account}
+            value={userLogin.email}
             type="text"
-            placeholder="Nhập tài khoản"
-            name="uname"
-            id="username1"
-
+            placeholder="Nhập email"
+            name="email"
+            id=""
             onChange={(e) =>
-              setUserLogin({ ...userLogin, account: e.target.value })
+              setUserLogin({ ...userLogin, email: e.target.value })
             }
           />
+          <p className="text-danger text-error">{errorMessage}</p>
           <label>
             <b id="validate-password1">Mật khẩu</b>
           </label>
@@ -84,11 +86,12 @@ export default function Login() {
             id="password1"
 
           />
-           <p className="text-danger text-error">{errorMessage}</p>
+          <p className="text-danger text-error">{errorMessage}</p>
           <button
             className="btn btn-outline-success"
             type="button"
             onClick={handleLogin}
+
           >
             Đăng nhập
           </button>
@@ -107,7 +110,7 @@ export default function Login() {
             Hủy
           </button>
           <span className="psw">
-            Forgot <a href="#">password?</a>
+            Forgot <a>password?</a>
           </span>
         </div>
       </form>

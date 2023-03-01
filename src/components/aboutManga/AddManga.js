@@ -62,15 +62,6 @@ export default function AddChapter() {
     setImageUrls('');
   }
 
-  //     const handleSubmit = (e) => {
-  //       e.preventDefault();
-  //       setName('');
-  //       setChapters('');
-  //       setStatus('');
-  //       setImageUrls('')
-  //     };
-
-
   useEffect(() => {
     dispatch(act_get_manga())
   }, []);
@@ -113,7 +104,7 @@ export default function AddChapter() {
                 <div style={{ color: "#f1f1f1" }}>Chon Anh:</div>
                 <div>
                   <img style={{ width: "80px" }} src={imageUrls} />
-                  <input value={imageUrls} type="file" onChange={(e) => {
+                  <input  type="file" onChange={(e) => {
                     setImageUpload(e.target.files[0])
                   }}></input>
                   <button onClick={uploadFile}> Upload Image</button>

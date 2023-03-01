@@ -3,10 +3,8 @@ import { instances } from "./axios"
 //Xây dựng các service để gọi API - xử lý bất dồng bọ
 export const MANGA_GET_SERVICE = async () => {
     try {
-        //Gọi và đợi kết quả trả về ---> http://localhost/3002/mangas = instance.get("mangas")
-        console.log("Goi API");
+        //Gọi và đợi kết quả trả về ---> http://localhost/3002/mangas = instance.get("mangas
         let response = await instances.get("mangas");
-        console.log("response-->", response);
         //trả về danh sách user lấy được từ API
         return response.data;
     } catch (error) {
