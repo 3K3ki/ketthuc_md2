@@ -20,7 +20,7 @@ export const MANGA_SAGA_GET = function* (action) {
     } else {
       listManga = yield call(mangaServices.MANGA_GET_SERVICE);
     }
-    console.log("in");
+   
     // call(functionname, argument of function)
     // success --> gọi action --> put(action)
     yield put(act_manga_success(MANGA_SUCCESS, listManga))
@@ -74,7 +74,7 @@ export const USER_SAGA_GET = function* () {
     // success --> gọi action --> put(action)
     yield put(act_user_success(USER_SUCCESS, listUser))
   } catch (error) {
-    console.log(error);
+ 
   }
 }
 

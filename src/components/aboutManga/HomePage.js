@@ -7,37 +7,61 @@ import ResignModal from '../aboutUser/ResignModal';
 import ChangePass from '../aboutUser/ChangePass';
 import Header from './Header';
 import Footer from './Footer';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import ReadManga from './ReadManga';
+
 
 export default function Home() {
-const [userLogin,setUserLogin] =useState("")
-  const dispatch = useDispatch()
+  const [userLogin, setUserLogin] = useState("");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [showMangaInfo, setShowMangaInfo] = useState({
+  });
+
+  console.log('showMangaInfo', showMangaInfo);
+
+  const handleSendInfo = (manga) => {
+    // setShowMangaInfo(manga)
+    navigate('/mangainfo', { state: manga })
+  }
+
+  const [showImgChapter, setShowImgChapter] = useState({})
+
+  const handleShowImgChapter = (manga) => {
+
+    // setShowMangaInfo(manga)
+    navigate('/readManga', { state: manga })
+  }
+
 
   useEffect(() => {
     dispatch(act_get_manga())
   }, []);
   //lấy sate hiển thị raF
   const listManga = useSelector(state => state.mangas)
-  let elementListManga = listManga.map((manga, index) =>
+  console.log(listManga);
+  let elementListManga = listManga.map((manga) =>
     <>
-      <div className="grid" id="listComic" key={index}>
+      <div className="grid" id="listComic" key={manga.id}>
         <div className="book-avarta">
-          <Link to="/mangainfo">
+          {/* <button onClick={() => { handleSendInfo(manga) }}>Click</button> */}
+          <div onClick={() => { handleSendInfo(manga) }}>
             <img src={manga.imageUrls} className="image" />
-          </Link >
+          </div >
           <div className="book-details">
             <i className="bi bi-eye-fill"></i>
             428,1k
             <i className="bi bi-bookmark-fill"></i>
             728
           </div>
+
         </div>
         <div className="book-info">
           <div className="book-name" >
-            <a title="manga" href="" >{manga.name}</a>
+            <a title="manga" >{manga.name}</a>
           </div>
-          <div className="last-chapter">
-            <a href="manga/readManga.html">Chapter {manga.chapters}</a>
+          <div className="last-chapter" onClick={() => { handleShowImgChapter(manga) }}>
+            <a >Chapter {manga.chapters}</a>
           </div>
         </div>
       </div>
@@ -530,6 +554,7 @@ const [userLogin,setUserLogin] =useState("")
       {/*//ChangePasswordform*/}
       <ChangePass />
       {/* end changePass form */}
+
     </>
 
   )

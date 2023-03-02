@@ -7,9 +7,9 @@ import { act_get_manga, act_search_manga } from '../../redux/actions';
 
 
 export default function Header(props) {
-  console.log(props);
+
   let { userLogin } = props
-  console.log(userLogin);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [search, setSearch] = useState("")

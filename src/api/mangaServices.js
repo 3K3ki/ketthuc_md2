@@ -20,7 +20,7 @@ export const MANGA_DELETE_SERVICE = async (id) => {
 }
 export const MANGA_UPDATE_SERVICE = async (updateManga) => {
     console.log(updateManga);
-    await instances.put(`mangas/${updateManga.id}`,updateManga)
+    await instances.patch(`mangas/${updateManga.id}`,updateManga)
 }
 export const MANGA_SEARCH_SERVICE = async (searchData) =>{
     let response = await instances.get("mangas?name_like="+searchData)

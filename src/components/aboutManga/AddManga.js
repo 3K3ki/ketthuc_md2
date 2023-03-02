@@ -4,14 +4,15 @@ import { useState, useEffect } from "react";
 import { storage } from "../firebase";
 import { ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
 import { useNavigate } from 'react-router-dom';
-import { act_create_manga, act_get_manga } from '../../redux/actions';
+import { act_create_manga, act_get_manga, act_update_manga } from '../../redux/actions';
 import ModalEdit from '../modalAction/ModalEdit';
 import ModalDelete from '../modalAction/ModalDelete';
 import Header from './Header';
 import Footer from './Footer';
 import LoginModal from '../aboutUser/LoginModal';
 import ResignModal from '../aboutUser/ResignModal';
-
+import ModalAddImageChapter from '../modalAction/ModalAddImageChapter';
+import {v4} from 'uuid'
 
 export default function AddChapter() {
   const navigate = useNavigate()
@@ -33,34 +34,27 @@ export default function AddChapter() {
       });
     });
   };
-  // setImageUrls((prev) => [...prev, url]);
-  // Lấy dữ liệu trả về từ firebase
-  // useEffect(() => {
-  //   listAll(imagesListRef).then((res) => {
-  //     res.items.forEach((item) => {
-  //       getDownloadURL(item).then((url) => {
-  //         setImageUrls((prev) => [...prev, url]);
-  //       });
-  //     });
-  //   });
-  // }, []);
-  //End phần FireBase
+
+
 
   //update Manga
   const [updateManga, setUpdateManga] = useState({})
 
   // them moi mangaa
+
   const [idDelete, setIdDelete] = useState()
   const [name, setName] = useState("");
   const [chapters, setChapters] = useState("");
   const [status, setStatus] = useState("");
   const handleCreate = () => {
-    dispatch(act_create_manga({ imageUrls, name, chapters, status }))
+    dispatch(act_create_manga({ imageUrls, name, chapters, status, imageChapterUrls:[] }))
     setName('');
     setChapters('');
     setStatus('');
     setImageUrls('');
+
   }
+
 
   useEffect(() => {
     dispatch(act_get_manga())
@@ -68,11 +62,16 @@ export default function AddChapter() {
   //lấy sate hiển thị ra
   const listManga = useSelector(state => state.mangas)
   let elementListManga = listManga.map((manga, index) => {
+   
     return <tr key={manga.id}>
       <td>{index + 1}</td>
-      <td><img src={manga.imageUrls} style={{ height: '150px' }}></img></td>
+      <td><img src={manga.imageUrls} style={{ height: '150px' , width: "117px"}}></img></td>
       <td>{manga.name}</td>
-      <td>{manga.chapters}</td>
+      <td>
+        <button  className=" btn-primary" data-bs-toggle="modal" data-bs-target={`#modalAdd${manga.id}`}>Thêm ảnh cho chapter: {manga.chapters}</button>
+        <ModalAddImageChapter manga={manga}/>
+
+      </td>
       <td>{manga.status}</td>
       <td className="btn-change"  ><button onClick={() => { setUpdateManga(manga) }} className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
         data-bs-whatever=""   ><i className="bi bi-pen-fill"></i></button></td>
@@ -104,7 +103,7 @@ export default function AddChapter() {
                 <div style={{ color: "#f1f1f1" }}>Chon Anh:</div>
                 <div>
                   <img style={{ width: "80px" }} src={imageUrls} />
-                  <input  type="file" onChange={(e) => {
+                  <input type="file" onChange={(e) => {
                     setImageUpload(e.target.files[0])
                   }}></input>
                   <button onClick={uploadFile}> Upload Image</button>
@@ -130,6 +129,22 @@ export default function AddChapter() {
                   value={chapters}
                   onChange={(e) => setChapters(e.target.value)}
                 />
+                {/* <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    color: "#f1f1f1"
+                  }}
+                >Lấy ảnh cho chapter
+                  <div>
+                  <img style={{ width: "80px" }} src={imageChapterUrls} />
+                    <input multiple type="file" onChange={(e) => {
+                      setImageUpload(e.target.files)
+                    }}></input>
+                    <button onClick={uploadFile}> Upload Image</button>
+                  </div>
+                </div> */}
                 <span className="input-group-mb-3" />
               </div>
               <div>
@@ -184,9 +199,10 @@ export default function AddChapter() {
       {/*MODAL DELETE*/}
       <ModalDelete idDelete={idDelete} />
       {/*END MODAL DELETE*/}
-
+      
       <LoginModal />
       <ResignModal />
+
     </>
 
   )

@@ -7,7 +7,6 @@ import { rootSaga } from "../saga";
 const sagaMiddleware = createReduxMiddleware();
 //tạo store và chấp nhận saga middleware là middleware của store
 const store= createStore(rootReducer,applyMiddleware(sagaMiddleware));
-console.log('store', store);
 //chạy rootSagaa để lọc các action
 sagaMiddleware.run(rootSaga);
 // sagaMiddleware.run(rootSaga1);
